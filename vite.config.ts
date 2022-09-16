@@ -1,9 +1,8 @@
 import { defineConfig } from "vite";
 import solidPlugin from "vite-plugin-solid";
-import suidPlugin from "@suid/vite-plugin";
 
 export default defineConfig({
-  plugins: [suidPlugin(), solidPlugin()],
+  plugins: [solidPlugin()],
 
   // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   // prevent vite from obscuring rust errors
