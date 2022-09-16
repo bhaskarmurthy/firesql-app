@@ -1,4 +1,33 @@
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+
+import { FireSQL } from "firesql";
+import { createSignal, Index, onMount } from "solid-js";
+
+const firebaseConfig = {};
+
+firebase.initializeApp(firebaseConfig);
+const fireSQL = new FireSQL(firebase.firestore());
+
+type User = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
+const getUsers = fireSQL.query<User>(`
+  SELECT *
+  FROM users
+  ORDER BY lastName ASC
+`);
+
 export default function App() {
+  const [users, setUsers] = createSignal<User[]>([]);
+
+  onMount(() => {
+    getUsers.then((u) => setUsers(u));
+  });
+
   return (
     <div>
       <div class="navbar bg-primary text-primary-content">
@@ -33,6 +62,26 @@ export default function App() {
           </ul>
         </div>
       </div>
+      <table class="table table-zebra m-1">
+        <thead>
+          <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <Index each={users()}>
+            {(user) => (
+              <tr>
+                <td>{user().firstName}</td>
+                <td>{user().lastName}</td>
+                <td>{user().email}</td>
+              </tr>
+            )}
+          </Index>
+        </tbody>
+      </table>
     </div>
   );
 }

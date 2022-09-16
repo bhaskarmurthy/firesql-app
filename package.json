@@ -32,6 +32,8 @@
   "dependencies": {
     "@tauri-apps/api": "^1.1.0",
     "daisyui": "^2.27.0",
+    "firebase": "^9.10.0",
+    "firesql": "^2.0.2",
     "solid-js": "^1.4.7"
   }
 }
